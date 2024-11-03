@@ -13,10 +13,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.1.0
 
       - name: Choose Random Theme
         id: random_theme
