@@ -23,6 +23,10 @@ jobs:
           random_theme=${themes[$RANDOM % ${#themes[@]}]}
           echo "theme=$random_theme" >> $GITHUB_ENV
 
+      - name: Display README.md contents
+        run: |
+          cat README.md
+
       - name: Update README.md
         run: |
           sed -i "s/{{THEME}}/${{ env.theme }}/g" README.md
@@ -31,17 +35,17 @@ jobs:
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
 
-      - name: Pull latest changes with rebase (handles errors)
-        run: |
-          git fetch origin
-          git pull --rebase origin main || exit 0  # Handles pull errors gracefully
-
-      - name: Commit changes (handles no changes)
+      - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add README.md
           git commit -m "Update theme to ${{ env.theme }}" || echo "No changes to commit"
+
+      - name: Pull latest changes with rebase
+        run: |
+          git fetch origin
+          git pull --rebase origin main || echo "Failed to pull changes, proceeding with push"
 
       - name: Push changes
         run: |
