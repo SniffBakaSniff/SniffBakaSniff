@@ -33,8 +33,7 @@ jobs:
 
       - name: Pull latest changes with rebase
         run: |
-          git fetch origin
-          git pull --rebase origin main
+          git pull
 
       - name: Commit changes
         run: |
@@ -45,4 +44,4 @@ jobs:
 
       - name: Push changes
         run: |
-          git push origin main || git pull --rebase origin main && git push origin main
+          git push
