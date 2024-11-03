@@ -1,0 +1,38 @@
+name: Update README with Random Theme
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight
+  workflow_dispatch:  # Allows manual trigger from the Actions tab
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Choose Random Theme
+        id: random_theme
+        run: |
+          themes=("tokyonight" "holi" "radical" "merko" "gruvbox" "onedark" "dracula" "solarized-light" "solarized-dark")
+          random_theme=${themes[$RANDOM % ${#themes[@]}]}
+          echo "theme=$random_theme" >> $GITHUB_ENV
+
+      - name: Update README.md
+        run: |
+          sed -i "s/{{THEME}}/$theme/g" README.md
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git commit -m "Updated README with random theme"
+          git push
