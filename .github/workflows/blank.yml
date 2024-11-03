@@ -31,7 +31,7 @@ jobs:
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
 
-      - name: Pull latest changes with rebase
+      - name: Pull latest changes with rebase (fix)
         run: |
           git fetch origin
           git pull --rebase origin main
@@ -43,6 +43,6 @@ jobs:
           git add README.md
           git commit -m "Update theme to ${{ env.theme }}" || echo "No changes to commit"
 
-      - name: Push changes
+      - name: Push changes (improved error handling)
         run: |
-          git push origin main || git pull --rebase origin main && git push origin main
+          git push origin main || (git pull --rebase origin main && git push origin main)
