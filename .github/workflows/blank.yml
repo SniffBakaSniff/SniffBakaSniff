@@ -34,7 +34,7 @@ jobs:
       - name: Pull latest changes with rebase
         run: |
           git fetch origin
-          git pull --rebase origin main || exit 0
+          git pull --rebase origin main
 
       - name: Commit changes
         run: |
@@ -42,4 +42,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add README.md
           git commit -m "Update theme to ${{ env.theme }}" || echo "No changes to commit"
-          git push
+
+      - name: Push changes
+        run: |
+          git push origin main || git pull --rebase origin main && git push origin main
