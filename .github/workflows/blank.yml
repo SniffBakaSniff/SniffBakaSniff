@@ -2,7 +2,7 @@ name: Update README with Random Theme
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight
+    - cron: '0 * * * *'  # Runs daily at midnight
   workflow_dispatch:  # Allows manual trigger from the Actions tab
 
 jobs:
