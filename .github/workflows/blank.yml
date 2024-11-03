@@ -36,9 +36,10 @@ jobs:
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
 
-      - name: Pull latest changes
+      - name: Pull latest changes with rebase
         run: |
-          git pull --rebase origin main
+          git fetch origin
+          git pull --rebase origin main || exit 0
 
       - name: Commit changes
         run: |
@@ -47,6 +48,6 @@ jobs:
           git add README.md
           git commit -m "Updated README with random theme" || echo "No changes to commit"
 
-      - name: Push changes
+      - name: Force push changes
         run: |
           git push --force
