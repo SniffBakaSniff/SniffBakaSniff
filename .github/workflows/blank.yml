@@ -18,6 +18,8 @@ jobs:
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.1.0
+        with:
+          node-version: '20'
 
       - name: Choose Random Theme
         id: random_theme
@@ -37,12 +39,14 @@ jobs:
           git add README.md
           git commit -m "Updated README with random theme" || echo "No changes to commit"
 
+      - name: Set up remote URL with GITHUB_TOKEN
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
       - name: Pull latest changes
         run: |
           git pull --rebase origin main
 
       - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git push
