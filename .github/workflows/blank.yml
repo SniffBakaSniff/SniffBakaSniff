@@ -16,11 +16,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4.1.0
-        with:
-          node-version: '20'
-
       - name: Choose Random Theme
         id: random_theme
         run: |
@@ -30,7 +25,7 @@ jobs:
 
       - name: Update README.md
         run: |
-          sed -i "s/{{THEME}}/$theme/g" README.md
+          sed -i "s/{{THEME}}/${{ env.theme }}/g" README.md
 
       - name: Set up remote URL with GITHUB_TOKEN
         run: |
@@ -43,9 +38,8 @@ jobs:
 
       - name: Commit changes
         run: |
-          git config --local user.email "your_email@example.com"
-          git config --local user.name "your_username"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           git add README.md
-          git commit -m "Update theme to $selected_theme" || echo "No changes to commit"
+          git commit -m "Update theme to ${{ env.theme }}" || echo "No changes to commit"
           git push
-
